@@ -1,54 +1,23 @@
 class Solution {
     public int[] productExceptSelf(int[] nums) {
-
-        int k = nums.length;
-        int[] output = new int[k];
-
-        int window = 1;
-        int zeroCount = 0;
-
-        // Count zeros
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == 0) {
-                zeroCount++;
-            }
+        int n = nums.length;
+        int[] ans = new int[n];
+        
+     
+        ans[0] = 1; 
+        for (int i = 1; i < n; i++) {
+            ans[i] = ans[i - 1] * nums[i - 1];
         }
-
-        // If more than one zero
-        if (zeroCount > 1) {
-            return output; // all elements will be 0
+        
+       
+        int suffixProduct = 1; 
+        for (int i = n - 1; i >= 0; i--) {
+            ans[i] = ans[i] * suffixProduct;
+            
+            suffixProduct = suffixProduct * nums[i]; 
         }
-
-        // If exactly one zero
-        if (zeroCount == 1) {
-
-            for (int i = 0; i < nums.length; i++) {
-                if (nums[i] != 0) {
-                    window = window * nums[i];
-                }
-            }
-
-            for (int i = 0; i < nums.length; i++) {
-                if (nums[i] == 0) {
-                    output[i] = window;
-                } else {
-                    output[i] = 0;
-                }
-            }
-
-        } else {
-
-            // No zeros
-            for (int i = 0; i < nums.length; i++) {
-                window = window * nums[i];
-            }
-
-            for (int i = 0; i < nums.length; i++) {
-                output[i] = window / nums[i];
-            }
-        }
-
-        return output;
+        
+        return ans;
     }
-
 }
+
